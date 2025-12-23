@@ -1,5 +1,7 @@
 from enum import Enum
 
+from htmlnode import LeafNode
+
 class TextType(Enum):
     PLAIN = "plain"
     BOLD = "bold"
@@ -23,3 +25,19 @@ class TextNode:
 
     def __repr__(self):     # .value will print "Bold" insted of TextType.BOLD when printing the TextNode object
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+    
+def text_node_to_html_node(text_node):
+    if text_node.text_type is TextType.PLAIN:
+        return LeafNode(None, text_node.text)
+    if text_node.text_type is TextType.BOLD:
+        return LeafNode("b", text_node.text)
+    if text_node.text_type is TextType.ITALIC:
+        return LeafNode("i", text_node.text)
+    if text_node.text_type is TextType.CODE:
+        return LeafNode("code", text_node.text)
+    if text_node.text_type is TextType.LINK:
+        return LeafNode("a", text_node.text, {"href":text_node.url})
+    if text_node.text_type is TextType.IMAGE:
+        return LeafNode("img", "", {"src":text_node.url, "alt":text_node.text})
+    else:
+        raise Exception("Not an accepted text type.")
