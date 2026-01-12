@@ -138,3 +138,7 @@ class TestParentNode(unittest.TestCase):
         child_node = LeafNode("p", "")
         parent_node = ParentNode("b", [child_node])
         self.assertEqual(parent_node.to_html(), "<b><p></p></b>")
+
+
+if __name__ == "__main__":
+    unittest.main()
