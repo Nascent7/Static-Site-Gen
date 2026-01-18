@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from htmlnode import HTMLNode, LeafNode, ParentNode, extract_title
 
 class TestHTMLNode(unittest.TestCase):
     def test_props(self):
@@ -139,6 +139,36 @@ class TestParentNode(unittest.TestCase):
         parent_node = ParentNode("b", [child_node])
         self.assertEqual(parent_node.to_html(), "<b><p></p></b>")
 
+    
+class TestExtractHeading(unittest.TestCase):
+    def test_extract_title_multiline(self):
+        text = """
+# This is a heading 
+
+and this ao some content.
+"""
+        heading = extract_title(text)
+        self.assertEqual("This is a heading", heading)
+
+    def test_extract_title_one_line(self):
+        text = "# Heading 1 h1"
+        heading = extract_title(text)
+        self.assertEqual("Heading 1 h1", heading)
+
+    def test_extreat_title_no_title(self):
+        text = """
+This is some text
+
+in a textblock
+
+with multilines 
+and single returns 
+
+and double returns.
+"""
+        with self.assertRaises(Exception) as ctx:
+            extract_title(text)
+        self.assertEqual(str(ctx.exception), "Missing H1 heading.")
 
 if __name__ == "__main__":
     unittest.main()

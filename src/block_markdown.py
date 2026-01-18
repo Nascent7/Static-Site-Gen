@@ -35,10 +35,10 @@ def block_to_block_type(md_block):
         return BlockType.HEADING
     if md_block.startswith('```\n') and md_block.endswith('```'):
         return BlockType.CODE
-    if md_block.startswith("> "):
+    if md_block.startswith(">"):
         sep_line = md_block.splitlines()
         for line in sep_line:
-            if line.startswith('> '):
+            if line.startswith('>'):
                 continue
             else:
                 return BlockType.PARAGRAPH

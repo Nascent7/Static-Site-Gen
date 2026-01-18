@@ -91,11 +91,10 @@ def quote_block_to_htmlNode(md_block):
     if md_block[1] == BlockType.QUOTE:
         split_quote_lines = md_block[0].splitlines()
         for line in split_quote_lines:
-            if line.startswith("> "):
-                quote_line = line.removeprefix("> ")
-                list_of_quote_lines += text_to_children(quote_line)
-            else:
+            if not line.startswith(">"):
                 raise Exception("Invalid markdown block quote format.")
+            quote_line = line[1:].strip()
+            list_of_quote_lines += text_to_children(quote_line)
         return ParentNode("blockquote", list_of_quote_lines)
 
 # MD text supports multiple unordered list markers (ex.'*', '-')
@@ -148,11 +147,15 @@ def paragraph_block_to_htmlNode(md_block):
         list_of_html_text_lines.extend(text_to_children(replaced_plain_lines))
         return ParentNode("p", list_of_html_text_lines)
 
+
+# Actual function to convert markdown to html nodes
+# utilizing the helper functions above.
 def markdown_to_html_node(markdown):
     md_blocks = markdown_to_blocks(markdown)
     html_children = []
     for block in md_blocks:
         md_block_type = block_to_block_type(block)
+        print("BLOCK:", repr(block[:60]), "TYPE:", md_block_type) # debug
         content_and_type = (block, md_block_type)
         if content_and_type[1] == BlockType.CODE:
             html_children.append(code_block_to_htmlNode(content_and_type))
@@ -167,3 +170,20 @@ def markdown_to_html_node(markdown):
         if content_and_type[1] == BlockType.PARAGRAPH:
             html_children.append(paragraph_block_to_htmlNode(content_and_type))
     return ParentNode("div", html_children)
+
+
+# -------------------------------------
+
+def extract_title(markdown):
+    heading_found = False
+    lines = markdown.splitlines()
+    for line in lines:
+        if line.startswith("# "):
+            cleaned_heading = line.strip()
+            removed_prefix = cleaned_heading.removeprefix("# ")
+            heading_found = True
+            break
+    if heading_found == True:
+        return removed_prefix
+    else:
+        raise Exception("Missing H1 heading.")
