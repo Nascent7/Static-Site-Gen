@@ -75,7 +75,8 @@ def heading_block_to_htmlNode(md_block):
             return LeafNode("h3", h3_text)
         if md_block[0].startswith("## "):
             h2_text = md_block[0].removeprefix("## ")
-            return LeafNode("h2", h2_text)
+            children = text_to_children(h2_text)
+            return LeafNode("h2", children)
         if md_block[0].startswith("# "):
             h1_text = md_block[0].removeprefix("# ")
             return LeafNode("h1", h1_text)
