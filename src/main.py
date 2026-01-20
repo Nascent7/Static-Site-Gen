@@ -4,7 +4,7 @@ import shutil
 from textnode import TextNode
 from textnode import TextType
 from copystatic import copy_static
-from generatepage import generate_page
+from generatepage import generate_pages_recursive
 
 
 def main():
@@ -17,5 +17,6 @@ def main():
         os.mkdir("public")
         copy_static("static", "public")
 
-        generate_page("content/index.md","template.html", "public/index.html")
+        # generate_page("content/index.md","template.html", "public/index.html")
+        generate_pages_recursive("content", "template.html", "public")
 main()

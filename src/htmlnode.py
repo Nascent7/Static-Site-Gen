@@ -155,7 +155,7 @@ def markdown_to_html_node(markdown):
     html_children = []
     for block in md_blocks:
         md_block_type = block_to_block_type(block)
-        print("BLOCK:", repr(block[:60]), "TYPE:", md_block_type) # debug
+        # print("BLOCK:", repr(block[:60]), "TYPE:", md_block_type) # debug
         content_and_type = (block, md_block_type)
         if content_and_type[1] == BlockType.CODE:
             html_children.append(code_block_to_htmlNode(content_and_type))
