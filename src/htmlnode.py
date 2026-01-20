@@ -63,23 +63,28 @@ def heading_block_to_htmlNode(md_block):
     if md_block[1] == BlockType.HEADING:
         if md_block[0].startswith("###### "):
             h6_text = md_block[0].removeprefix("###### ")
-            return LeafNode("h6", h6_text)
+            children = text_to_children(h6_text)
+            return ParentNode("h6", children)
         if md_block[0].startswith("##### "):
             h5_text = md_block[0].removeprefix("##### ")
-            return LeafNode("h5", h5_text)
+            children = text_to_children(h5_text)
+            return ParentNode("h5", children)
         if md_block[0].startswith("#### "):
             h4_text = md_block[0].removeprefix("#### ")
-            return LeafNode("h4", h4_text)
+            children = text_to_children(h4_text)
+            return ParentNode("h4", children)
         if md_block[0].startswith("### "):
             h3_text = md_block[0].removeprefix("### ")
-            return LeafNode("h3", h3_text)
+            children = text_to_children(h3_text)
+            return ParentNode("h3", children)
         if md_block[0].startswith("## "):
             h2_text = md_block[0].removeprefix("## ")
             children = text_to_children(h2_text)
-            return LeafNode("h2", children)
+            return ParentNode("h2", children)
         if md_block[0].startswith("# "):
             h1_text = md_block[0].removeprefix("# ")
-            return LeafNode("h1", h1_text)
+            children = text_to_children(h1_text)
+            return ParentNode("h1", children)
         
 def code_block_to_htmlNode(md_block):
     if md_block[1] == BlockType.CODE:
